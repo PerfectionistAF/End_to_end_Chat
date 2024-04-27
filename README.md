@@ -30,3 +30,17 @@ document
 **3) Hashing:** We can ensure data integrity by sending the data’s hash along with 
 the data, the receiver checks if the data is the same as the one 
 provided by the sender thus confirming the data integrity.
+
+### Part Two:
+**4) User Authentication:** This module targets user identity verification, either through password or certificate.
+
+**5) Key Management:** 
+
+
+## Integration
+
+
+## Testing
+
+
+
