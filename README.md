@@ -1,6 +1,6 @@
 # End to end Encrypted Chat 
 
-End to end encryption is a private communication system in which only communicating users can participate. This project employs various cryptography techniques in a security suite as well as threading and socket programming on an end-to-end encrypted chat.
+End to end encryption is a private communication system in which only communicating users can participate. This project employs hybrid encryption using a variety of cryptography techniques in a security suite as well as threading and socket programming on an end-to-end encrypted chat.
 
 ## Requirements
 
