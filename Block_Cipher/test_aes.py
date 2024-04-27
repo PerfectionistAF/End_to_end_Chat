@@ -36,9 +36,13 @@ def AES_encrypt(message):
 def AES_decrypt(message, key, iv):
     iv = iv
     decrypt_data = message
+    salt = get_random_bytes(32) 
+    #salt = b'P.\xb8g\xdf\xdc\x87\xec\x9f\x84c\x8at\xb3T\xfc\xeb\xb7\xc5gI\xcc\xdd4\xaa\xa1\x14o\xe1Sq\x9f'
+    password = "mypassword"
+    key = PBKDF2(password, salt, dkLen=32)
     cipher = AES.new(key, AES.MODE_CBC, iv = iv)
-    plaintext = unpad(cipher.decrypt(decrypt_data), AES.block_size)
-    return plaintext
+    plaintext = cipher.decrypt(decrypt_data) #unpad(cipher.decrypt(decrypt_data), AES.block_size)
+    return plaintext, key
 
 
 message = input("YOU: ")
@@ -46,9 +50,10 @@ cipher_0, key_0, iv_0 = AES_encrypt(bytes(message, 'utf-8'))
 print('\n')
 print('Ciphertext_0: ', cipher_0, '\n')
 print('Key_0: ', key_0, '\n')
-decipher_0 = AES_decrypt(cipher_0, key_0, iv_0)
+decipher_0, key_1 = AES_decrypt(cipher_0, key_0, iv_0)
 print('Plaintext_0: ', decipher_0, '\n')
-cipher_1, key_1, iv_1 = AES_encrypt(decipher_0)
-print('Ciphertext_1: ', cipher_1, '\n')
 print('Key_1: ', key_1, '\n')
+cipher_1, key_2, iv_1 = AES_encrypt(decipher_0)
+print('Ciphertext_1: ', cipher_1, '\n')
+print('Key_2: ', key_2, '\n')
 
