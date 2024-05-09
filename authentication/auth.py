@@ -1,0 +1,47 @@
+import pyrebase
+
+firebaseConfig = {'apiKey': "AIzaSyD93v3JJazqqg95RZA3raqTu3qNFEtYYOI",
+                  'authDomain': "securityproject-7a510.firebaseapp.com",
+                  'projectId': "securityproject-7a510",
+                  'storageBucket': "securityproject-7a510.appspot.com",
+                  'messagingSenderId': "688231036937",
+                  'appId': "1:688231036937:web:6ec8712f306b21819f20d8",
+                  'measurementId': "G-WN8NKB7LKH"
+                  }
+
+firebase = pyrebase.initialize_app(firebaseConfig)
+auth = firebase.auth()
+
+
+def signin():
+    print("SIGN-IN")
+    email = input("Email: ")
+    password = input("Password: ")
+    try:
+        signin = auth.sign_in_with_email_and_password(email, password)
+        print("Successfully signed in!")
+    except:
+        print("Incorrect email and/or password.")
+    return
+
+
+def signup():
+    print("SIGN-UP")
+    email = input("Email: ")
+    password = input("Password: ")
+    try:
+        user = auth.create_user_with_email_and_password(email, password)
+        ask = input("Do you want to login? [y/n]")
+        if ask == 'y':
+            signin()
+    except:
+        print("Email already used.")
+    return
+
+
+answer = input("Are you a new user? [y/n]")
+
+if answer == 'n':
+    signin()
+elif answer == 'y':
+    signup()
