@@ -26,7 +26,7 @@ def verify_hash(hashed_data, data):
 
 def host_server(IP:str):
 	server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	server.bind((IP, 8876))
+	server.bind((IP, 9999))#8876))  ##socket can only be accessed once ##check antp
 	server.listen()
 	print("Server is listening....")
 
@@ -35,7 +35,7 @@ def host_server(IP:str):
 
 def connect_to_host(IP:str):
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((IP, 8876))
+    client.connect((IP, 9999))#8876))
     print("Client connected!")
     return client
 
