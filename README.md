@@ -32,7 +32,7 @@ the data, the receiver checks if the data is the same as the one
 provided by the sender thus confirming the data integrity.
 
 ### Part Two:
-**4) User Authentication:** This module targets user identity verification, either through password or certificate.
+**4) User Authentication:** This module targets user identity verification, through password. Firebase Authentication via the pyrebase python library. Firebase Authentication is a service, provided by Google Firebase, that offers several authentication methods and handles user sign-up, user sign-in, and other account management tasks. We implemented the Firebase email and password authentication method.
 
 **5) Key Management:** 
 
