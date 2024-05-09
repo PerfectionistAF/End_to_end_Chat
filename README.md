@@ -38,7 +38,10 @@ provided by the sender thus confirming the data integrity.
 
 
 ## Integration
+Integration was performed through the use of teo main types of architectures:
+**1) Hybrid Encryption:** This is a user customizable integration architecture that can apply symmetric, asymmetric and key management procedures. All after verifying user identity. The process occurs at each side separately . Start at each host and client with public key then decrypt with private key  
 
+**2) Key Message Passing:** This is also a user customizable technique. The user only chooses how they wish to generate the keys, but the sequence of transmission and generation remains hard coded. The host key is used for first encryption before the message is sent. At the client's side, the client private key is used to decrypt that message. The keys are usually not the same, but the message is sent and decrypted correctly.
 
 ## Testing
 
