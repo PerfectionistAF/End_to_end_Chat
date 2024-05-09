@@ -34,7 +34,8 @@ provided by the sender thus confirming the data integrity.
 ### Part Two:
 **4) User Authentication:** This module targets user identity verification, through password. Firebase Authentication via the pyrebase python library. Firebase Authentication is a service, provided by Google Firebase, that offers several authentication methods and handles user sign-up, user sign-in, and other account management tasks. We implemented the Firebase email and password authentication method.
 
-**5) Key Management:** 
+**5) Key Management:**  RSA algorithm is used to create a pair of public and private. Both parties create a key of their own and send the public key to the other party. As a server, the clients public key of each client is stored to be used for encrypted communication between the two parties. The client needs only to store its private key for decryption and the 
+server’s (host) public key for encryption. The process is similar to Github’s SSH Keys.
 
 
 ## Integration
