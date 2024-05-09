@@ -52,7 +52,7 @@ if choice == "1" :
 
 	# Receive filename
 	filename = client.recv(1024).decode()
-	# print("File name: " + filename)
+	print("File name: " + filename)
 
 	# Receive hash data
 	verification_hash = client.recv(1024).decode()
@@ -89,8 +89,8 @@ if choice == "1" :
 elif choice == "2":
 
 	client = connect_to_host(IP)
-	# filename = input("Enter filename to send: ")
-	filename = "text.txt"
+	filename = input("Enter filename to send: ")
+	#filename = "text.txt"
 
 	
 
