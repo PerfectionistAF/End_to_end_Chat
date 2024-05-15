@@ -111,16 +111,16 @@ elif(choice == "2"):
 #############################ECC + AES############################################################################################
 elif(choice == "3"):
     private_key, public_key = generate_rsa_key_pair()
-    sym_key = get_random_bytes(16)  # AES-128
+    sym_key = get_random_bytes(8)  # AES-128
     encrypted_sym_key = rsa_encrypt_symmetric_key(sym_key, public_key)
     #user enters message to be encrypted
     message = input("YOU:")
     message = message.encode('utf-8')
-    encrypted_message = encrypt_message(message, sym_key)
+    encrypted_message = des_encrypt_message(message, sym_key)
     decrypted_sym_key = rsa_decrypt_symmetric_key(encrypted_sym_key, private_key)
     decrypted_message = des_decrypt_message(encrypted_message, decrypted_sym_key)
     print("Original message:", message)
-    print("Encrypted message:", ciphertext)
+    print("Encrypted message:", encrypted_message)
     print("Decrypted message:", decrypted_message)
 #############################RSA + DES############################################################################################
 elif(choice == "4"):
