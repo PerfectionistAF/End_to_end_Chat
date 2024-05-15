@@ -5,7 +5,7 @@ init()
 
 #print(Fore.CYAN + 'This text is red in color')
 
-cprint("\n\t****WELCOME TO SECURITY SUITE 1.0****\t\n", "cyan", attrs=["dark"])
+cprint("\t****WELCOME TO SECURITY SUITE 1.0****\t\n", "cyan", attrs=["dark"])
 cprint("\n  ____      _____      ____", "light_cyan")
 cprint("\n  \   \    /     \    /   /", "light_cyan")
 cprint("\n   \   \__/   _   \__/   /", "light_cyan")

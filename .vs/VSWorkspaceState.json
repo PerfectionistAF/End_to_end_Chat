@@ -1,6 +1,10 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Authentication",
+    "\\End2End_Chat",
+    "\\PKC"
   ],
+  "SelectedNode": "\\PKC\\ECC.py",
   "PreviewInSolutionExplorer": false
 }

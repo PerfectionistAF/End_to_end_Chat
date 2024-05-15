@@ -39,7 +39,7 @@ else:
 
 def AES_encrypt(message):
     #salt = get_random_bytes(32) 
-    salt = b'P.\xb8g\xdf\xdc\x87\xec\x9f\x84c\x8at\xb3T\xfc\xeb\xb7\xc5gI\xcc\xdd4\xaa\xa1\x14o\xe1Sq\x9f'
+    salt = bytes('P.\xb8g\xdf\xdc\x87\xec\x9f\x84c\x8at\xb3T\xfc\xeb\xb7\xc5gI\xcc\xdd4\xaa\xa1\x14o\xe1Sq\x9f')
     password = "mypassword"
     key = PBKDF2(password, salt, dkLen=32)
     cipher = AES.new(key, AES.MODE_CBC)

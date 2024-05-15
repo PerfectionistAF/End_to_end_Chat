@@ -43,7 +43,7 @@ def ecc_decrypt_symmetric_key(encrypted_sym_key, ecc_private_key):
 def des_pad_message(message):
     #Pad message to match DES block size
     block_size = 8
-    padded_message = message + (block_size - len(message) % block_size) * b'\0'
+    padded_message = message + (block_size - len(message) % block_size) * bytes('\0')
     return padded_message
 
 def des_encrypt_message(message, sym_key):
@@ -56,7 +56,7 @@ def des_decrypt_message(encrypted_message, sym_key):
     #Decrypt message using DES symmetric key
     cipher = DES.new(sym_key, DES.MODE_ECB)
     decrypted_message = cipher.decrypt(encrypted_message)
-    return decrypted_message.rstrip(b'\0')
+    return decrypted_message.rstrip(bytes('\0'))
 
 def aes_encrypt_message(message, sym_key):
     #Encrypt message using AES symmetric key
@@ -73,27 +73,27 @@ def aes_decrypt_message(nonce, ciphertext, tag, sym_key):
 
 
 ##user choice:
-choice = input("Enter (1) for RSA + AES | (2) for ECC + AES | (3) for RSA + DES | (4) for ECC + DES :")
+##choice = input("Enter (1) for RSA + AES | (2) for ECC + AES | (3) for RSA + DES | (4) for ECC + DES :")
 
-if (choice == "1"):
-    private_key, public_key = generate_rsa_key_pair()
-    sym_key = get_random_bytes(16)  # AES-128
-    encrypted_sym_key = rsa_encrypt_symmetric_key(sym_key, public_key)
+##if (choice == "1"):
+private_key, public_key = generate_rsa_key_pair()
+sym_key = get_random_bytes(16)  # AES-128
+encrypted_sym_key = rsa_encrypt_symmetric_key(sym_key, public_key)
 
-    #user enters message to be encrypted
-    message = input("YOU:")
-    message = message.encode('utf-8')
-    nonce, ciphertext, tag = aes_encrypt_message(message, sym_key)
-    #now we decrypt
-    decrypted_sym_key = rsa_decrypt_symmetric_key(encrypted_sym_key, private_key)
-    #Decrypt the message using the decrypted symmetric key
-    decrypted_message = aes_decrypt_message(nonce, ciphertext, tag, decrypted_sym_key)
+#user enters message to be encrypted
+message = input("YOU:")
+message = message.encode('utf-8')
+nonce, ciphertext, tag = aes_encrypt_message(message, sym_key)
+#now we decrypt
+decrypted_sym_key = rsa_decrypt_symmetric_key(encrypted_sym_key, private_key)
+#Decrypt the message using the decrypted symmetric key
+decrypted_message = aes_decrypt_message(nonce, ciphertext, tag, decrypted_sym_key)
 
-    print("Original message:", message)
-    print("Encrypted message:", ciphertext)
-    print("Decrypted message:", decrypted_message)
+print("Original message:", message)
+print("Encrypted message:", ciphertext)
+print("Decrypted message:", decrypted_message)
 #############################RSA + AES############################################################################################
-elif(choice == "2"):
+'''elif(choice == "2"):
     private_key, public_key = generate_ecc_key_pair()
     sym_key = get_random_bytes(16)  # AES-128
     encrypted_sym_key = ecc_encrypt_symmetric_key(sym_key, public_key)
@@ -138,4 +138,4 @@ elif(choice == "4"):
     print("Decrypted message:", decrypted_message)
 #############################ECC + DES############################################################################################
 else:
-    print("Invalid choice or timeout")
+    print("Invalid choice or timeout")'''

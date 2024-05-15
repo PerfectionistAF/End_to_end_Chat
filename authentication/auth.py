@@ -1,4 +1,7 @@
 import pyrebase
+from colorama import init, Fore, Back, Style
+from termcolor import cprint
+
 
 firebaseConfig = {'apiKey': "AIzaSyD93v3JJazqqg95RZA3raqTu3qNFEtYYOI",
                   'authDomain': "securityproject-7a510.firebaseapp.com",
@@ -12,6 +15,16 @@ firebaseConfig = {'apiKey': "AIzaSyD93v3JJazqqg95RZA3raqTu3qNFEtYYOI",
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
+init()
+#flag = 0
+def startUp():
+    cprint("\t****WELCOME TO SECURITY SUITE 1.0****\t\n", "cyan", attrs=["dark"])
+    cprint("\n  ____      _____      ____", "light_cyan")
+    cprint("\n  \   \    /     \    /   /", "light_cyan")
+    cprint("\n   \   \__/   _   \__/   /", "light_cyan")
+    cprint("\n    \        / \        /" , "light_cyan")
+    cprint("\n     \______/   \______/" , "light_cyan")
+
 
 def signin():
     print("SIGN-IN")
@@ -19,16 +32,19 @@ def signin():
     password = input("Password: ")
     try:
         signin = auth.sign_in_with_email_and_password(email, password)
+        #flag = 1
         print("Successfully signed in!")
+        startUp()
     except:
         print("Incorrect email and/or password.")
-    return
+    return 
 
 
 def signup():
     print("SIGN-UP")
     email = input("Email: ")
     password = input("Password: ")
+    #flag = 1
     try:
         user = auth.create_user_with_email_and_password(email, password)
         ask = input("Do you want to login? [y/n]")
