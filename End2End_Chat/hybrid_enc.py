@@ -14,6 +14,36 @@ from colorama import init, Fore, Back, Style
 from termcolor import cprint
 #import Authentication.auth
 import welcome
+from hmac import HMAC
+import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+def hash_data_secretly(data):
+    if isinstance(data, str):
+        data = data.encode("utf-8")
+    key = os.environ["CRYPTO_SECRET_KEY"]
+    hash = HMAC(key.encode("utf-8"), data, "SHA256")
+    hashed_data = hash.hexdigest()
+    return hashed_data
+
+def verify_secret_hash(hashed_data, data):
+    return (hashed_data == hash_data_secretly(data))
+
+
+def send_message_with_integrity(plaintext, cipher):
+    return json.dumps({
+        'message': cipher,
+        'hash': hash_data_secretly(plaintext)
+    })
+
+def get_message_with_integrity(plaintext: str):
+    res = json.loads(plaintext)
+    return res['message'], res['hash']
+
+
 
 init()
 
