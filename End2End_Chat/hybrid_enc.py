@@ -127,8 +127,8 @@ elif choice == "2":  #####client
             iv = cipher.iv
             encrypted_message = iv + ciphertext
             client.send(encrypted_message)
-    if choice2 == "2":
-        client.send('2'.encode())
+    if choice2 == "3":
+        client.send('3'.encode())
         # Receive partner's public key
         partner_public_key = client.recv(1024).decode()
         #####################################################
