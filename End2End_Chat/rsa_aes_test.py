@@ -1,4 +1,4 @@
-from Crypto.Cipher import AES
+from Crypto.Cipher import AES,DES
 from Crypto.Random import get_random_bytes
 from Crypto.Util.Padding import pad, unpad
 from Crypto.Protocol.KDF import PBKDF2
@@ -50,25 +50,26 @@ if choice == "1":  #####server
             plaintext = binascii.b2a_hex(cipher_aes.decrypt(decrypt_plaintext)).decode("utf-8").strip()
             #decrypt_plaintext = cipher_aes.decrypt(ciphertext)
             print("Partner:", plaintext)
-    elif option.decode() == "2":
-        print("ECC + AES")
-        private_key = generate_eth_key()
-        private_key_hex = private_key.to_hex()
-        public_key_hex = private_key.public_key.to_hex()
-        print(public_key_hex)
-        # Send public key
-        client.send(public_key_hex.encode())
-        # Receive Symmetric Key
-        symmetric_key = decrypt(private_key_hex, client.recv(1024)).decode()
-        # print(symmetric_key)
     elif option.decode() == "3":
         print("RSA + DES")
         public_key, private_key = rsa.newkeys(1024)
+        print("Public key to connections...")#, public_key)
         # Send public key
         client.send(public_key.save_pkcs1())
-        # Receive Symmetric Key
-        symmetric_key = rsa.decrypt(client.recv(1024), private_key).decode()
-
+        # Receive encoded Symmetric Key and decrypt it using private key
+        encrypted_symmetric_key = client.recv(1024)
+        symmetric_key = rsa.decrypt(bytes(encrypted_symmetric_key), private_key).decode()
+        print("RSA decoded AES symmetric key...")#, symmetric_key)
+        print("START RECEIVING MESSAGES NOW...")
+        while True:
+            encrypted_message = client.recv(1024)
+            if not encrypted_message:
+                break
+            iv = encrypted_message[:DES.block_size]
+            ciphertext = encrypted_message[DES.block_size:]
+            cipher_des = DES.new(symmetric_key.encode(), DES.MODE_CBC, iv=iv)
+            plaintext = cipher_des.decrypt(ciphertext).decode().strip()
+            print("Partner:", plaintext)
 elif choice == "2":  #####client
     choice2 = input("Enter (1) for RSA + AES | (2) for ECC + AES | (3) for RSA + DES | (4) for ECC + DES:")
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

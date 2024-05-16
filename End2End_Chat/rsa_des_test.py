@@ -4,6 +4,8 @@ from Crypto.Protocol.KDF import PBKDF2
 import socket
 import rsa
 import binascii
+from ecies.utils import generate_eth_key
+from ecies import encrypt, decrypt
 
 public_key, private_key = rsa.newkeys(1024)
 partner_public_key = None
@@ -26,7 +28,7 @@ if choice == "1":  #####server
         client.send(public_key.save_pkcs1())
         # Receive encoded Symmetric Key and decrypt it using private key
         encrypted_symmetric_key = client.recv(1024)
-        symmetric_key = rsa.decrypt(encrypted_symmetric_key, private_key).decode()
+        symmetric_key = rsa.decrypt(bytes(encrypted_symmetric_key), private_key).decode()
         print("RSA decoded DES symmetric key:", symmetric_key)
         print("START RECEIVING MESSAGES NOW...")
         while True:
@@ -65,34 +67,4 @@ elif choice == "2":  #####client
         # Receive partner's public key
         partner_public_key = rsa.PublicKey.load_pkcs1(client.recv(1024))
         print("Public key received for encryption:", partner_public_key)
-        #####################################################
-        salt = get_random_bytes(8)  # DES
-        password = "12345678"  # DES key size is 8 bytes
-        symmetric_key = PBKDF2(password, salt, dkLen=8)
-        cipher = DES.new(symmetric_key, DES.MODE_CBC)
-        symmetric_key_hex = binascii.b2a_hex(symmetric_key).decode("utf-8").strip()  ## to string
-        client.send(rsa.encrypt(symmetric_key_hex.encode(), partner_public_key))
-        print("RSA encoded message DES encryption key sent:", symmetric_key_hex)
-        print("START SENDING MESSAGES NOW...")
-        while True:
-            message = input("")
-            if message == 'exit':
-                break
-            print("You:", message)
-            # Encrypt using symmetric key
-            padded_message = message.ljust(8)  # Padding for DES
-            ciphertext = cipher.encrypt(padded_message.encode())
-            iv = cipher.iv
-            encrypted_message = iv + ciphertext
-            client.send(encrypted_message)
-    if choice2 == "2":
-        client.send('2'.encode())
-        # Receive partner's public key
-        partner_public_key = client.recv(1024).decode()
-        #####################################################
-        # Send Symmetric Key
-        client.send(encrypt(partner_public_key, "plaintext".encode()))
-
-else:
-    print("Invalid input.")
-    exit()
+        #######################################
