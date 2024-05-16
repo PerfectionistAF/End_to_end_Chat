@@ -105,6 +105,15 @@ if choice == "1":  #####server
             plaintext = binascii.b2a_hex(cipher_aes.decrypt(decrypt_plaintext)).decode("utf-8").strip()
             #decrypt_plaintext = cipher_aes.decrypt(ciphertext)
             cprint("Partner: " + plaintext, "yellow")
+    elif option.decode() == "2":
+	print("ECC + AES")
+        # Send public key
+        private_key = generate_eth_key()
+        private_key_hex = private_key.to_hex()
+        public_key_hex = private_key.public_key.to_hex()
+        client.send(public_key_hex.encode())
+        # Receive partner's public key
+        partner_public_key = client.recv(1024).decode()
     elif option.decode() == "3":
         cprint("RSA + DES", "light_cyan")
         public_key, private_key = rsa.newkeys(1024)
@@ -157,32 +166,32 @@ elif choice == "2":  #####client
             iv = cipher.iv
             encrypted_message = iv + ciphertext
             client.send(encrypted_message)
-    if choice2 == "3":
-        client.send('3'.encode())
+    if choice2 == "2":
+        client.send('2'.encode())
         # Receive partner's public key
         partner_public_key = client.recv(1024).decode()
         #####################################################
-        # Send Symmetric Key
-        client.send(encrypt(partner_public_key, "plaintext".encode()))
+        # Send Public Key
+        private_key = generate_eth_key()
+        private_key_hex = private_key.to_hex()
+        public_key_hex = private_key.public_key.to_hex()
+        client.send(public_key_hex.encode())
 
 else:
     print("Invalid input.")
     exit()
 
-
-
-def send_msg(client):
+def send_msg_ecies(client):
     while True:
         message = input("")
-
-        client.send(rsa.encrypt(message.encode(), partner_public_key))
+        client.send(encrypt(partner_public_key, message.encode()))
         print("You: " + message)
 
 
-def receive_msg(client):
+def receive_msg_ecies(client):
     while True:
-        print("Partner: " + rsa.decrypt(client.recv(1024), private_key).decode())
+        message = decrypt(private_key_hex, client.recv(1024)).decode()
+        print("Partner: " + message)
 
-
-#threading.Thread(target=send_msg, args=(client,)).start()
-#threading.Thread(target=receive_msg, args=(client,)).start()
+#threading.Thread(target=send_msg_ecies, args=(client,)).start()
+#threading.Thread(target=receive_msg_ecies, args=(client,)).start()
