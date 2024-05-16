@@ -1,7 +1,7 @@
 import pyrebase
-from colorama import init, Fore, Back, Style
-from termcolor import cprint
-
+#from colorama import init, Fore, Back, Style
+#from termcolor import cprint
+import welcome
 
 firebaseConfig = {'apiKey': "AIzaSyD93v3JJazqqg95RZA3raqTu3qNFEtYYOI",
                   'authDomain': "securityproject-7a510.firebaseapp.com",
@@ -15,15 +15,7 @@ firebaseConfig = {'apiKey': "AIzaSyD93v3JJazqqg95RZA3raqTu3qNFEtYYOI",
 firebase = pyrebase.initialize_app(firebaseConfig)
 auth = firebase.auth()
 
-init()
-#flag = 0
-def startUp():
-    cprint("\t****WELCOME TO SECURITY SUITE 1.0****\t\n", "cyan", attrs=["dark"])
-    cprint("\n  ____      _____      ____", "light_cyan")
-    cprint("\n  \   \    /     \    /   /", "light_cyan")
-    cprint("\n   \   \__/   _   \__/   /", "light_cyan")
-    cprint("\n    \        / \        /" , "light_cyan")
-    cprint("\n     \______/   \______/" , "light_cyan")
+welcome.welcome()
 
 
 def signin():

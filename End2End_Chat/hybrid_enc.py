@@ -10,8 +10,15 @@ import binascii
 from unidecode import unidecode
 from ecies.utils import generate_eth_key
 from ecies import encrypt, decrypt
-
+from colorama import init, Fore, Back, Style
+from termcolor import cprint
 #import Authentication.auth
+import welcome
+
+init()
+
+welcome.welcome()
+
 
 def rsa_client():
 	# Receive partner's public key
@@ -40,7 +47,7 @@ if choice == "1":  #####server
     client, _ = server.accept()
     option = client.recv(1024)
     if option.decode() == "1":
-        print("RSA + AES")
+        cprint("RSA + AES", "light_cyan")
         public_key, private_key = rsa.newkeys(1024)
         print("Public key to connections...")#, public_key)
         # Send public key
@@ -57,7 +64,7 @@ if choice == "1":  #####server
             iv = encrypted_message[:16]
             #print("IV: ", iv)
             ciphertext = encrypted_message[16:]  ##AES_block_size
-            print("CIPHERTEXT: ", ciphertext)
+            cprint("CIPHERTEXT: "+ str(ciphertext), "yellow")
             cipher_aes = AES.new(symmetric_key.encode(), AES.MODE_CBC, iv=iv)
             #print("CIPHER AES: ", cipher_aes)
             #print("BLOCK_SIZE: ", AES.block_size)
@@ -67,9 +74,9 @@ if choice == "1":  #####server
             decrypt_plaintext = cipher_aes.decrypt(ciphertext)
             plaintext = binascii.b2a_hex(cipher_aes.decrypt(decrypt_plaintext)).decode("utf-8").strip()
             #decrypt_plaintext = cipher_aes.decrypt(ciphertext)
-            print("Partner:", plaintext)
+            cprint("Partner: " + plaintext, "yellow")
     elif option.decode() == "3":
-        print("RSA + DES")
+        cprint("RSA + DES", "light_cyan")
         public_key, private_key = rsa.newkeys(1024)
         print("Public key to connections...")#, public_key)
         # Send public key
@@ -77,7 +84,7 @@ if choice == "1":  #####server
         # Receive encoded Symmetric Key and decrypt it using private key
         encrypted_symmetric_key = client.recv(1024)
         symmetric_key = rsa.decrypt(bytes(encrypted_symmetric_key), private_key).decode()
-        print("RSA decoded AES symmetric key...")#, symmetric_key)
+        print("RSA decoded DES symmetric key...")#, symmetric_key)
         print("START RECEIVING MESSAGES NOW...")
         while True:
             encrypted_message = client.recv(1024)
@@ -87,9 +94,9 @@ if choice == "1":  #####server
             ciphertext = encrypted_message[DES.block_size:]
             cipher_des = DES.new(symmetric_key.encode(), DES.MODE_CBC, iv=iv)
             plaintext = cipher_des.decrypt(ciphertext).decode().strip()
-            print("Partner:", plaintext)
+            cprint("Partner: " + plaintext, "yellow")
 elif choice == "2":  #####client
-    choice2 = input("Enter (1) for RSA + AES | (2) for ECC + AES | (3) for RSA + DES | (4) for ECC + DES:")
+    choice2 = input("Enter (1) for RSA + AES | (2) for RSA + DES | (3) for ECC + AES | (4) for ECC + DES:")
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     client.connect((IP, 9999))
     if choice2 == "1":
@@ -116,7 +123,7 @@ elif choice == "2":  #####client
             # Encrypt using symmetric key
             padded_message = pad(bytes(message, 'utf-8'), AES.block_size)
             ciphertext = cipher.encrypt(padded_message)
-            print("Encrypted YOU:", ciphertext)
+            cprint("Encrypted YOU: " + str(ciphertext), "yellow")
             iv = cipher.iv
             encrypted_message = iv + ciphertext
             client.send(encrypted_message)
