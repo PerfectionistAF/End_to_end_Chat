@@ -89,9 +89,9 @@ decrypted_sym_key = rsa_decrypt_symmetric_key(encrypted_sym_key, private_key)
 #Decrypt the message using the decrypted symmetric key
 decrypted_message = aes_decrypt_message(nonce, ciphertext, tag, decrypted_sym_key)
 
-print("Original message:", message)
-print("Encrypted message:", ciphertext)
-print("Decrypted message:", decrypted_message)
+#print("Original message:", message)
+#print("Encrypted message:", ciphertext)
+#print("Decrypted message:", decrypted_message)
 #############################RSA + AES############################################################################################
 '''elif(choice == "2"):
     private_key, public_key = generate_ecc_key_pair()
